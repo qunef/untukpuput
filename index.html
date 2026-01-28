@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            min-height: 100vh;
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+        }
+
+        html {
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+        }
+
+        /* Question Screen */
+        .question-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            transition: opacity 1s, visibility 1s;
+        }
+
+        .question-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .question-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 50px 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            animation: questionAppear 1s ease-out;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes questionAppear {
+            0% {
+                transform: scale(0.5) rotate(-10deg);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .question-box h2 {
+            color: #c9184a;
+            font-size: 28px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option {
+            position: relative;
+        }
+
+        .option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .option label {
+            display: block;
+            padding: 18px 25px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 18px;
+            color: #333;
+            font-weight: 500;
+            border: 3px solid transparent;
+        }
+
+        .option input[type="radio"]:checked + label {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            transform: scale(1.05);
+            border-color: #ff1744;
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.4);
+        }
+
+        .option label:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(245, 87, 108, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 40px rgba(245, 87, 108, 0.5);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        .error-message {
+            color: #ff1744;
+            margin-top: 15px;
+            font-size: 14px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .error-message.show {
+            opacity: 1;
+        }
+
+        .container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .container.show {
+            opacity: 1;
+        }
+
+        /* Buket Bunga */
+        .bouquet-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            z-index: 10;
+            animation: bouquetAppear 2s ease-out 0.5s forwards;
+        }
+
+        @keyframes bouquetAppear {
+            0% {
+                transform: translate(-50%, -50%) scale(0) rotate(-180deg);
+                opacity: 0;
+            }
+            60% {
+                transform: translate(-50%, -50%) scale(1.1) rotate(10deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        .bouquet {
+            position: relative;
+            width: 200px;
+            height: 300px;
+            filter: drop-shadow(0 10px 30px rgba(0,0,0,0.3));
+        }
+
+        .stem {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 150px;
+            background: linear-gradient(to bottom, #4a7c4e, #2d5a2f);
+            border-radius: 10px;
+            z-index: 1;
+        }
+
+        .ribbon {
+            position: absolute;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 40px;
+            background: #ff69b4;
+            clip-path: polygon(0 0, 100% 0, 85% 50%, 100% 100%, 0 100%, 15% 50%);
+            z-index: 2;
+            animation: ribbonShine 2s infinite;
+        }
+
+        @keyframes ribbonShine {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
+        }
+
+        .rose {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            animation: roseFloat 3s ease-in-out infinite;
+        }
+
+        @keyframes roseFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(5deg); }
+        }
+
+        .rose:nth-child(1) { top: 40px; left: 70px; background: radial-gradient(circle at 30% 30%, #ff6b9d, #c9184a); animation-delay: 0s; }
+        .rose:nth-child(2) { top: 50px; left: 10px; background: radial-gradient(circle at 30% 30%, #ff85a2, #d62976); animation-delay: 0.3s; }
+        .rose:nth-child(3) { top: 70px; left: 130px; background: radial-gradient(circle at 30% 30%, #ff5e8a, #b51e5f); animation-delay: 0.6s; }
+        .rose:nth-child(4) { top: 100px; left: 40px; background: radial-gradient(circle at 30% 30%, #ff4d7d, #a01850); animation-delay: 0.9s; }
+        .rose:nth-child(5) { top: 110px; left: 100px; background: radial-gradient(circle at 30% 30%, #ff668e, #c42a63); animation-delay: 1.2s; }
+
+        .petal {
+            position: absolute;
+            width: 20px;
+            height: 30px;
+            background: inherit;
+            border-radius: 50% 50% 50% 0;
+            transform-origin: bottom left;
+        }
+
+        .rose .petal:nth-child(1) { transform: rotate(0deg); }
+        .rose .petal:nth-child(2) { transform: rotate(72deg); }
+        .rose .petal:nth-child(3) { transform: rotate(144deg); }
+        .rose .petal:nth-child(4) { transform: rotate(216deg); }
+        .rose .petal:nth-child(5) { transform: rotate(288deg); }
+
+        .center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 15px;
+            height: 15px;
+            background: #ffd700;
+            border-radius: 50%;
+        }
+
+        /* Photo Gallery */
+        .photo-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .photo {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+            border: 5px solid white;
+            object-fit: cover;
+            animation: photoFall 4s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        @keyframes photoFall {
+            0% {
+                top: -200px;
+                opacity: 0;
+                transform: rotate(0deg) scale(0.5);
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                top: 120vh;
+                opacity: 0;
+                transform: rotate(360deg) scale(0.8);
+            }
+        }
+
+        /* Love Hearts */
+        .heart {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            opacity: 0;
+            animation: heartFloat 4s ease-in-out forwards;
+            pointer-events: none;
+            z-index: 15;
+        }
+
+        .heart svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 2px 4px rgba(255, 23, 68, 0.3));
+        }
+
+        @keyframes heartFloat {
+            0% {
+                top: -50px;
+                opacity: 0;
+                transform: scale(0) rotate(0deg);
+            }
+            20% {
+                opacity: 1;
+                transform: scale(1) rotate(180deg);
+            }
+            80% {
+                opacity: 0.8;
+            }
+            100% {
+                top: 100vh;
+                opacity: 0;
+                transform: scale(0.5) rotate(720deg);
+            }
+        }
+
+        /* Sparkle Effect */
+        .sparkle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px white;
+            animation: sparkleAnim 2s ease-in-out infinite;
+            pointer-events: none;
+            z-index: 20;
+        }
+
+        @keyframes sparkleAnim {
+            0%, 100% {
+                opacity: 0;
+                transform: scale(0);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        /* Message */
+        .love-message {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            z-index: 11;
+            opacity: 0;
+            animation: messageAppear 1s ease-out 3s forwards;
+            max-width: 90%;
+            padding: 20px;
+        }
+
+        @keyframes messageAppear {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .love-message h1 {
+            color: white;
+            font-size: 48px;
+            text-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+
+        .love-message p {
+            color: white;
+            font-size: 20px;
+            margin-top: 10px;
+            text-shadow: 0 3px 10px rgba(0,0,0,0.3);
+        }
+
+        /* Responsive Design for Mobile */
+        @media screen and (max-width: 768px) {
+            body {
+                height: 100vh;
+                height: 100dvh; /* Dynamic viewport height for mobile */
+            }
+
+            .question-box {
+                padding: 30px 25px;
+                max-width: 85%;
+            }
+
+            .question-box h2 {
+                font-size: 22px;
+                margin-bottom: 20px;
+            }
+
+            .question-box p {
+                font-size: 18px !important;
+                margin-bottom: 20px !important;
+            }
+
+            .option label {
+                padding: 15px 20px;
+                font-size: 16px;
+            }
+
+            .submit-btn {
+                padding: 12px 30px;
+                font-size: 18px;
+            }
+
+            .bouquet-wrapper {
+                transform: translate(-50%, -50%) scale(0);
+            }
+
+            .bouquet {
+                width: 150px;
+                height: 225px;
+            }
+
+            .rose {
+                width: 45px;
+                height: 45px;
+            }
+
+            .rose:nth-child(1) { top: 30px; left: 52px; }
+            .rose:nth-child(2) { top: 37px; left: 7px; }
+            .rose:nth-child(3) { top: 52px; left: 97px; }
+            .rose:nth-child(4) { top: 75px; left: 30px; }
+            .rose:nth-child(5) { top: 82px; left: 75px; }
+
+            .stem {
+                width: 15px;
+                height: 110px;
+            }
+
+            .ribbon {
+                bottom: 60px;
+                width: 45px;
+                height: 30px;
+            }
+
+            .photo {
+                width: 120px;
+                height: 120px;
+                border: 3px solid white;
+            }
+
+            .heart {
+                width: 25px;
+                height: 25px;
+            }
+
+            .love-message {
+                bottom: 30px;
+                padding: 15px;
+            }
+
+            .love-message h1 {
+                font-size: 32px;
+            }
+
+            .love-message p {
+                font-size: 16px;
+            }
+        }
+
+        @media screen and (max-width: 480px) {
+            .question-box {
+                padding: 25px 20px;
+            }
+
+            .question-box h2 {
+                font-size: 20px;
+            }
+
+            .question-box p {
+                font-size: 16px !important;
+            }
+
+            .option label {
+                padding: 12px 15px;
+                font-size: 15px;
+            }
+
+            .submit-btn {
+                padding: 10px 25px;
+                font-size: 16px;
+            }
+
+            .bouquet {
+                width: 120px;
+                height: 180px;
+            }
+
+            .rose {
+                width: 35px;
+                height: 35px;
+            }
+
+            .rose:nth-child(1) { top: 24px; left: 42px; }
+            .rose:nth-child(2) { top: 30px; left: 5px; }
+            .rose:nth-child(3) { top: 42px; left: 78px; }
+            .rose:nth-child(4) { top: 60px; left: 24px; }
+            .rose:nth-child(5) { top: 66px; left: 60px; }
+
+            .stem {
+                width: 12px;
+                height: 90px;
+            }
+
+            .ribbon {
+                bottom: 48px;
+                width: 38px;
+                height: 25px;
+            }
+
+            .photo {
+                width: 100px;
+                height: 100px;
+            }
+
+            .heart {
+                width: 20px;
+                height: 20px;
+            }
+
+            .love-message h1 {
+                font-size: 26px;
+                letter-spacing: 1px;
+            }
+
+            .love-message p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Question Screen -->
+    <div class="question-screen" id="questionScreen">
+        <div class="question-box">
+            <h2>💕Halo cousin tersayanggku💕</h2>
+            <p style="font-size: 20px; color: #666; margin-bottom: 25px;">Hal apa yang paling menggambarkan kamu belakangan ini?</p>
+            
+            <div class="options">
+                <div class="option">
+                    <input type="radio" id="option1" name="answer" value="sayang">
+                    <label for="option1">Tenangg 😌😌</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="option2" name="answer" value="sangat">
+                    <label for="option2">Berjuanggga 💪💪</label>
+                </div>
+                <div class="option">
+                    <input type="radio" id="option3" name="answer" value="selamanya">
+                    <label for="option3">Berkembanggg🌱🌱</label>
+                </div>
+            </div>
+            
+            <button class="submit-btn" id="submitBtn" onclick="checkAnswer()">Jawab 💝</button>
+            <div class="error-message" id="errorMsg">Pilih jawaban dulu dong! 🥺</div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container" id="mainContent">
+        <!-- Photo Container -->
+        <div class="photo-container" id="photoContainer"></div>
+
+        <!-- Bouquet -->
+        <div class="bouquet-wrapper">
+            <div class="bouquet">
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="center"></div>
+                </div>
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="center"></div>
+                </div>
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="center"></div>
+                </div>
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="center"></div>
+                </div>
+                <div class="rose">
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="petal"></div>
+                    <div class="center"></div>
+                </div>
+                <div class="ribbon"></div>
+                <div class="stem"></div>
+            </div>
+        </div>
+
+        <!-- Love Message -->
+        <div class="love-message">
+            <h1>Happy Birthday</h1>
+            <p>my beautiful cousin may Allah bless you with happiness, good health and barakah in every step of your journey 🌸🫶🏻😍🥰</p>
+        </div>
+    </div>
+
+    <script>
+        // MASUKKAN URL FOTO-FOTO ANDA DI SINI
+        const photos = [
+            'img/12.jpeg',
+            'img/13.jpeg',
+            'img/14.jpeg',
+            'img/15.jpeg',
+            // Tambahkan URL foto lainnya di sini
+        ];
+
+        const photoContainer = document.getElementById('photoContainer');
+
+        // Check Answer Function
+        function checkAnswer() {
+            const selectedOption = document.querySelector('input[name="answer"]:checked');
+            const errorMsg = document.getElementById('errorMsg');
+            
+            if (!selectedOption) {
+                errorMsg.classList.add('show');
+                return;
+            }
+            
+            errorMsg.classList.remove('show');
+            
+            // Hide question screen and show main content
+            document.getElementById('questionScreen').classList.add('hidden');
+            setTimeout(() => {
+                document.getElementById('mainContent').classList.add('show');
+                startAllAnimations();
+            }, 1000);
+        }
+
+        // Start all animations
+        function startAllAnimations() {
+            startPhotoAnimation();
+            setInterval(createHeart, 300);
+            setInterval(createSparkle, 200);
+            
+            for (let i = 0; i < 20; i++) {
+                setTimeout(createHeart, i * 200);
+            }
+        }
+
+        // Start photo animation
+        function startPhotoAnimation() {
+            photos.forEach((photoSrc, index) => {
+                setTimeout(() => {
+                    createFallingPhoto(photoSrc);
+                }, index * 800);
+            });
+            
+            // Ulangi animasi foto setelah semua foto selesai jatuh
+            setTimeout(() => {
+                startPhotoAnimation();
+            }, (photos.length * 800) + 5000);
+        }
+
+        function createFallingPhoto(src) {
+            const photo = document.createElement('img');
+            photo.className = 'photo';
+            photo.src = src;
+            
+            const randomLeft = Math.random() * (window.innerWidth - 200);
+            const randomDuration = Math.random() * 3 + 4;
+            const randomDelay = Math.random() * 0.5;
+            
+            photo.style.left = randomLeft + 'px';
+            photo.style.animationDuration = randomDuration + 's';
+            photo.style.animationDelay = randomDelay + 's';
+            
+            photo.addEventListener('animationend', () => {
+                photo.remove();
+            });
+            
+            photoContainer.appendChild(photo);
+        }
+
+        // Create floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = `
+                <svg viewBox="0 0 32 29.6" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M23.6,0c-3.4,0-6.3,2.7-7.6,5.6C14.7,2.7,11.8,0,8.4,0C3.8,0,0,3.8,0,8.4c0,9.4,9.5,11.9,16,21.2
+                    c6.1-9.3,16-12.1,16-21.2C32,3.8,28.2,0,23.6,0z" fill="#ff1744"/>
+                </svg>
+            `;
+            
+            const randomLeft = Math.random() * window.innerWidth;
+            const randomSize = Math.random() * 15 + 20; // 20-35px
+            const duration = Math.random() * 2 + 4; // 4-6 detik
+            
+            heart.style.left = randomLeft + 'px';
+            heart.style.width = randomSize + 'px';
+            heart.style.height = randomSize + 'px';
+            heart.style.animationDuration = duration + 's';
+            heart.style.animationDelay = (Math.random() * 0.5) + 's';
+            
+            document.body.appendChild(heart);
+            
+            // Hapus setelah animasi selesai
+            setTimeout(() => {
+                if (heart.parentNode) {
+                    heart.remove();
+                }
+            }, (duration + 0.5) * 1000);
+        }
+
+        // Create sparkles around bouquet
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            const radius = 150;
+            const angle = Math.random() * Math.PI * 2;
+            
+            const x = centerX + Math.cos(angle) * radius;
+            const y = centerY + Math.sin(angle) * radius;
+            
+            sparkle.style.left = x + 'px';
+            sparkle.style.top = y + 'px';
+            sparkle.style.animationDelay = Math.random() + 's';
+            
+            document.body.appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
